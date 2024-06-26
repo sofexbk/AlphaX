@@ -1,8 +1,10 @@
 <div class="container">
+    <nav class="m-2 p-2 border border-info">
+        <button class="btn btn-outline-info"  *ngIf="this.authService.hasRole('ADMIN')" (click)="handleNewProduct()">New Product</button>
+    </nav>
     <ng-template #errorTemplate>
         <div class="text-danger">{{ errorMessage }}</div>
     </ng-template>
-
     <div class="card" *ngIf="products; else errorTemplate">
         <div class="card-header">Products List</div>
         <div class="card-body">
@@ -33,15 +35,20 @@
                         <td>
                             <i *ngIf="p.promotion" class="bi bi-heart-fill text-success"></i>
                         </td>
-                        <td>
+                        <td *ngIf="authService.hasRole('ADMIN')">
                             <button (click)="handleSetPromotion(p)" [ngClass]="{'btn-danger': p.promotion, 'btn-success': !p.promotion}" class="btn">
                                 <span *ngIf="p.promotion">Promotion Off</span>
                                 <span *ngIf="!p.promotion">Promotion On</span>
                             </button>
                         </td>
-                        <td>
+                        <td *ngIf="authService.hasRole('ADMIN')">
                             <button (click)="handleDeleteProduct(p)" class="btn btn-danger">
                                 <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </td>
+                        <td *ngIf="authService.hasRole('ADMIN')">
+                            <button (click)="handleEditProduct(p)" class="btn btn-success">
+                                <i class="bi bi-pencil-fill"></i> Edit
                             </button>
                         </td>
                     </tr>

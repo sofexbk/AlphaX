@@ -53,6 +53,21 @@ export class ProductService {
     let pageProducts =result.slice(index,index+size);
     return of({page:page,size:size,totalPages:totalPages,products:pageProducts});
   }
+  public saveProduct(product:Product) :Observable<Product>{
+    product.id=UUID.UUID();
+    this.products.push(product);
+    return of(product);
+  }
+  public getProduct(id : string) : Observable<Product>{
+    let product = this.products.find(p=>p.id==id);
+    if(product )return of(product);
+    else return throwError(()=>new Error("Product not found"));
+  }
+  public updateProduct(product : Product) : Observable<Product>{
+    this.products=this.products.map(p=>(p.id==product.id)?product:p);
+    return of(product);
+  }
+  
 }
 
 
